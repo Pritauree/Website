@@ -1,0 +1,10 @@
+<ul>
+  <h2 style="color: #EDF5E1"> Description of some of my close friends ! I also put infos on myself >:)</h2>
+  {{#each friends}}
+    <nav class="navbar navbar-light", style="background-color: #5CDB95;">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="friends/{{this.name}}">{{this.name}}</a>
+      </div>
+    </nav>
+  {{/each}}
+</ul>
