@@ -2,18 +2,19 @@ const express = require('express');
 const router = express.Router();
 const { readFriends, createFriends, deleteFriends, updateFriends  } = require('../models/friends');
 
+router.get('/addnew', (req, res) =>
+    res.render('friendform')
+);
+
 router.post('/addnew', async(req, res) => {
     // note we leave error handling for now and assume our data is created.
     // note: this is not safe code. Any inputs from a user should be validated and sanitised before
     // being saved to the database.
-    await createFriends(req.body)
-    req.session.friendsdata = { name: req.body.name};
+    await createFriends(req.body);
+    req.session.flash = 
+    { type: 'success', intro: 'Data Saved:', message:  "Data for <strong>" + req.body + "</strong> has been added"}
     res.redirect(303, '/friends')
 })
-
-router.get('/addnew', (req, res) =>
-    res.render('friendform')
-);
 
 router.get('/:name', async (req, res) => {
     var name = req.params.name;
@@ -35,9 +36,9 @@ router.get('/:name/delete', async (req, res) => {
     var name = req.params.name;
 
     await deleteFriends(name);
-
+    req.session.flash = 
+    { type: 'success', intro: 'Data Deleted:', message:  "Data for <strong>" + name + "</strong> has been deleted"}
     res.redirect(303, '/friends');
-
 });
 
 router.get('/:name/edit', async (req, res) => {
@@ -58,31 +59,16 @@ router.get('/:name/edit', async (req, res) => {
 router.post('/:name/edit', async (req,res) =>{
     console.table(req.body);
     await updateFriends(req.body);
-    
+    req.session.flash = 
+        { type: 'success', intro: 'Data Edited:', message:  "Data for <strong>" + req.params.name + "</strong> has been edited"}
     res.redirect(303, '/friends')
 
-})
-
-router.post('/addnew', async (req, res) => {
-
-    console.table(req.body)
-    // note we leave error handling for now and assume our data is created.
-    await createFriends(req.body);
-    res.redirect(303, '/friends')
 })
 
 router.get('/', async (req, res) =>
 {
     const friends = await readFriends();
-
-    if (req.session.friendsdata) {
-        var newName = req.session.friendsdata.name;
-    }
-    else {
-        var newName = "";
-    }
-    res.render('friends', { friends: friends, newName: newName })
-    
+    res.render('friends', { friends: friends})
 })
 
 module.exports = router;

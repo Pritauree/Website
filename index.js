@@ -7,6 +7,7 @@ const friends = require('./routes/friends')
 const { newsMiddleware } = require('./lib/middleware');
 const mongoose = require('mongoose');
 const session = require('express-session');
+const {flashMiddleware} = require('./lib/middleware.js');
 
 app.use(session(
   {secret: "Una is great",
@@ -14,6 +15,7 @@ app.use(session(
   resave: false,
   saveUnitialized: false
 }))
+app.use(flashMiddleware);
 app.use(express.urlencoded({ extended: true })) 
 app.use(cookieParser("Una is great !"));
 app.use(express.static('public'));
