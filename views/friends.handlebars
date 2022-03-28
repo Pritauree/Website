@@ -3,8 +3,14 @@
   {{#each friends}}
     <nav class="navbar navbar-light", style="background-color: #5CDB95;">
       <div class="container-fluid">
-        <a class="navbar-brand" href="friends/{{this.name}}">{{this.name}}</a>
+        <a class="navbar-brand" href="/friends/{{this.name}}">{{this.name}}</a>
       </div>
     </nav>
   {{/each}}
+  {{#if newName}}
+  <h2> A person has been added to the database with the name of {{newName}} </h2>
+  {{/if}}
+  <div class="d-grid gap-2 col-6 mx-auto">
+    <a class="btn btn-outline-primary" href="/friends/addnew" type="button">Friend Request</a>
+  </div>
 </ul>

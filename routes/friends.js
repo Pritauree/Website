@@ -1,45 +1,88 @@
 const express = require('express');
 const router = express.Router();
+const { readFriends, createFriends, deleteFriends, updateFriends  } = require('../models/friends');
 
-// Create a variable data that will have all the people stored
-var data = {
-    "Kevin": {
-        "name": "Kevin",
-        "dob": "26/03/2002",
-        "imageurl": "/images/Kevin.png",
-        "hobbies": ["Read manga", "Play games", "Running"]
-    },
+router.post('/addnew', async(req, res) => {
+    // note we leave error handling for now and assume our data is created.
+    // note: this is not safe code. Any inputs from a user should be validated and sanitised before
+    // being saved to the database.
+    await createFriends(req.body)
+    req.session.friendsdata = { name: req.body.name};
+    res.redirect(303, '/friends')
+})
 
-    "Lisa": {
-        "name": "Lisa",
-        "dob": "28/07/2003",
-        "imageurl": "/images/Lisa.png",
-        "hobbies": ["Bake cakes", "Play games", "Read manga", "Play piano"]
-    },
+router.get('/addnew', (req, res) =>
+    res.render('friendform')
+);
 
-    "Gabi": {
-        "name": "Gabi",
-        "dob": "15/11/2002",
-        "imageurl": "/images/Gabi.png",
-        "hobbies": ["Play games", "Read manga", "Ride a skateboard"]
-    }
-}
-
-router.get('/:name', (req, res) => {
+router.get('/:name', async (req, res) => {
     var name = req.params.name;
-    if (data[name] != undefined)
-    {
-        res.render('person', { person: data[name] })
+
+    const person = await readFriends({'name': name})
+
+    if (!person) {
+        console.log('404 because person doesn\'t exist');
+        res.render('404');
     }
-    else
-    {
-        res.render('404')
+    else {
+        res.render('person', { person: person });
     }
 });
 
+// no error checking for now.
+//
+router.get('/:name/delete', async (req, res) => {
+    var name = req.params.name;
 
-router.get('/', (req, res) => {
-    res.render('friends', { friends: data });
+    await deleteFriends(name);
+
+    res.redirect(303, '/friends');
+
 });
+
+router.get('/:name/edit', async (req, res) => {
+
+    var name = req.params.name;
+
+    const person = await readFriends({'name': name})
+
+    if (!person) {
+        console.log('404 because person doesn\'t exist');
+        res.render('404');
+    }
+    else {
+        res.render('friendeditform', { person: person });
+    }
+})
+
+router.post('/:name/edit', async (req,res) =>{
+    console.table(req.body);
+    await updateFriends(req.body);
+    
+    res.redirect(303, '/friends')
+
+})
+
+router.post('/addnew', async (req, res) => {
+
+    console.table(req.body)
+    // note we leave error handling for now and assume our data is created.
+    await createFriends(req.body);
+    res.redirect(303, '/friends')
+})
+
+router.get('/', async (req, res) =>
+{
+    const friends = await readFriends();
+
+    if (req.session.friendsdata) {
+        var newName = req.session.friendsdata.name;
+    }
+    else {
+        var newName = "";
+    }
+    res.render('friends', { friends: friends, newName: newName })
+    
+})
 
 module.exports = router;
