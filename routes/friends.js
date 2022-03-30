@@ -12,7 +12,7 @@ router.post('/addnew', async(req, res) => {
     // being saved to the database.
     await createFriends(req.body);
     req.session.flash = 
-    { type: 'success', intro: 'Data Saved:', message:  "Data for <strong>" + req.body + "</strong> has been added"}
+    { type: 'success', intro: 'Data Saved:', message:  "Data for <strong>" + req.body.name + "</strong> has been added"}
     res.redirect(303, '/friends')
 })
 

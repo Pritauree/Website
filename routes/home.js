@@ -1,11 +1,6 @@
 const express = require('express');
 const router = express.Router();
 
-const linksForHome = 
-[ {url: 'about' , text : 'About'},
-{ url: 'contact', text : 'Contact'},
-{url: 'friends', text : 'Friends'}];
-
 router.get('/',  (req, res) => {
 
     var message = "";
@@ -18,7 +13,7 @@ router.get('/',  (req, res) => {
 
     var currentDate = new Date();
     res.cookie('tracking',currentDate.toDateString(), {signed : true});
-    res.render('home', {'message': message, data : linksForHome});
+    res.render('home', {'message': message});
 });
 
 router.get('/about', (req, res) => {
