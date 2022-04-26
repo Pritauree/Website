@@ -1,0 +1,23 @@
+:root {
+    --primary: #8c38ff;
+    --light: #EEEEEE;
+    --dark: #212121;
+}
+
+* {
+    color: var(--dark);
+}
+
+footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: var(--dark);
+    color: var(--light);
+    text-align: center;
+}
+
+p {
+    color: var(--light);
+}

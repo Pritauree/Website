@@ -1,16 +1,19 @@
-<ul>
-  <h2 style="color: #EDF5E1"> Description of some of my close friends ! I also put infos on myself >:)</h2>
-  {{#each friends}}
-    <nav class="navbar navbar-light", style="background-color: #5CDB95;">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="/friends/{{this.name}}">{{this.name}}</a>
-      </div>
-    </nav>
-  {{/each}}
+<head>
+    <link rel="stylesheet" href="css/friends.css">
+</head>
+<body>
+  <h2> Description of some of my close friends ! I also put infos on myself >:)</h2>
+  <ul>
+    {{#each friends}}
+        <li>
+            <a href="/friends/{{this.name}}">{{this.name}}</a>
+        </li>
+    {{/each}}
+  </ul>
   {{#if newName}}
   <h2> A person has been added to the database with the name of {{newName}} </h2>
   {{/if}}
   <div class="d-grid gap-2 col-6 mx-auto">
     <a class="btn btn-outline-primary" href="/friends/addnew" type="button">Friend Request</a>
   </div>
-</ul>
+</body>

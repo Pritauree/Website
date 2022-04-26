@@ -1,0 +1,38 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #FFFFFF;
+    font-family: "Fire sans", sans-serif;
+}
+
+ul {
+    position: center;
+    width: 450px;
+    margin: 10px auto 0;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+ul li{
+    display: flex;
+    padding: 10px 20px;
+    background-color: #212121;
+    margin: 5px 0;
+    transition: .5s;
+    justify-content: center;
+}
+
+ul li:hover {
+    transform : scale(1.06);
+    background: #212121;
+}
+
+a {
+    text-align: center;
+    text-decoration: none;
+    color: #FFFFFF;
+}
+
+a:hover {
+    color: #8c38ff;
+}
